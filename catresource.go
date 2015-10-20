@@ -1,8 +1,8 @@
 package main
 
 type CatFact struct {
-	Species string
-	Fact    string
+	Species string `json:"species"`
+	Fact    string `json:"fact"`
 }
 
 type CatFacts []CatFact

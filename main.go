@@ -1,34 +1,18 @@
 package main
 
-import (
-	"fmt"
-	"html"
-	"log"
-	"net/http"
-
-	"github.com/gorilla/mux"
-)
+import "github.com/emicklei/go-restful"
 
 func main() {
-	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/", Index)
-	router.HandleFunc("/cats", CatIndex)
-	router.HandleFunc("/cats/{catFactID}", CatFactShow)
+	ws := new(restful.WebService)
+	ws.
+		Path("/cats").
+		Consumes(restful.MIME_JSON).
+		Produces(restful.MIME_JSON)
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	ws.Route(ws.GET("/{cat-id}").To(u.findCat)) // u is a UserResource
 }
 
-//Index ayyyy
-func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello Cat Lover, %q", html.EscapeString(r.URL.Path))
-}
-
-func CatIndex(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Cat Index!")
-}
-
-func CatFactShow(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	todoId := vars["catFactID"]
-	fmt.Fprintln(w, "Cat Fact:", todoId)
+// GET http://localhost:8080/users/1
+func (u CatResource) findCat(request *restful.Request, response *restful.Response) {
+	id := request.PathParameter("cat-id")
 }
