@@ -27,7 +27,7 @@ func (u CatResource) Register(container *restful.Container) {
 		Consumes(restful.MIME_JSON).
 		Produces(restful.MIME_JSON) // you can specify this per route as well
 
-	ws.Route(ws.GET("/{user-id}").To(u.serveFact).
+	ws.Route(ws.GET("/{fact-id}").To(u.serveFact).
 		Doc("get a cat fact!").
 		Operation("serveFact").
 		Param(ws.PathParameter("fact-id", "identifier of the catfact").DataType("string")).
@@ -39,6 +39,7 @@ func (u CatResource) Register(container *restful.Container) {
 		Operation("createFact").
 		Reads(CatFact{})) // from the request
 
+	container.Add(ws)
 }
 
 // GET http://localhost:8080/cats/1
