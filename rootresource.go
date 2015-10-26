@@ -1,6 +1,11 @@
 package main
 
-import "github.com/emicklei/go-restful"
+import (
+	"log"
+	"text/template"
+
+	"github.com/emicklei/go-restful"
+)
 
 type RootResource struct {
 	Message string
@@ -21,5 +26,10 @@ func (u RootResource) Register(container *restful.Container) {
 
 func (u RootResource) root(request *restful.Request, response *restful.Response) {
 	p := &Message{"Welcome to catfacts API!"}
-	response.WriteEntity(p)
+	t, err := template.ParseFiles("home.html")
+	if err != nil {
+		log.Fatalf("Template gave: %s", err)
+	}
+	t.Execute(response.ResponseWriter, p)
+	//response.WriteEntity(p)
 }
