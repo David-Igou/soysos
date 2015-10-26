@@ -19,13 +19,22 @@ type CatResource struct {
 	facts map[string]CatFact
 }
 
+type Message struct {
+	Text string
+}
+
 func (u CatResource) Register(container *restful.Container) {
 	ws := new(restful.WebService)
+
 	ws.
 		Path("/cats").
 		Doc("Get some facts about cats :D").
 		Consumes(restful.MIME_JSON).
-		Produces(restful.MIME_JSON) // you can specify this per route as well
+		Produces(restful.MIME_JSON)
+
+	ws.Route(ws.GET("/").To(u.home).
+		Doc("homepage of API").
+		Operation("home"))
 
 	ws.Route(ws.GET("/{fact-id}").To(u.serveFact).
 		Doc("get a cat fact!").
@@ -44,6 +53,11 @@ func (u CatResource) Register(container *restful.Container) {
 
 // GET http://localhost:8080/cats/1
 //
+func (u CatResource) home(reqest *restful.Request, response *restful.Response) {
+	p := &Message{"Welcome to catfacts API!"}
+	response.WriteEntity(p)
+}
+
 func (u CatResource) serveFact(request *restful.Request, response *restful.Response) {
 	id := request.PathParameter("fact-id")
 	cat := u.facts[id]
