@@ -21,6 +21,8 @@ func (u RootResource) Register(container *restful.Container) {
 		Doc("root").
 		Operation("root"))
 
+	ws.Filter(WebserviceLogging).Filter(MeasureTime)
+
 	container.Add(ws)
 }
 
