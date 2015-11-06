@@ -38,13 +38,14 @@ func (u UserResource) Register(container *restful.Container) {
 	container.Add(ws)
 }
 
-//Login validates and returns a user object if they exist in the database.
+//LoginUser currently looks for a user object in the database
 func LoginUser(user *User) bool {
 	x := DB{Database()}
 	x.InsertUser(user)
 	return true
 }
 
+//login inserts the user into the database
 func (u UserResource) login(request *restful.Request, response *restful.Response) {
 	user := new(User)
 	err := request.ReadEntity(user)
@@ -55,6 +56,7 @@ func (u UserResource) login(request *restful.Request, response *restful.Response
 	log.Printf("Login returned value %t", b)
 }
 
+//findUser will query the database for all users
 func (u UserResource) findUser(request *restful.Request, response *restful.Response) {
 	user := new(User)
 	err := request.ReadEntity(user)
@@ -63,6 +65,4 @@ func (u UserResource) findUser(request *restful.Request, response *restful.Respo
 	}
 	x := DB{Database()}
 	x.FindUser(user)
-
-	//log.Printf("findUser returned value %t", b)
 }
