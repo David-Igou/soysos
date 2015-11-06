@@ -11,6 +11,7 @@ type DB struct {
 	db *sql.DB
 }
 
+//This is the table scheme for creating your own user table.
 // CREATE TABLE `userinfo` (
 //     `sessionToken` VARCHAR(64) NULL,
 //     `username` VARCHAR(64) NULL,
