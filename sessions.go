@@ -1,19 +1,14 @@
 package main
 
 import (
-	//"net/http"
-	//"strconv"
-	//"crypto/md5"
-	//"github.com/emicklei/go-restful"
 	"crypto/rand"
 	"encoding/base64"
 	"io"
 
-	"code.google.com/p/gorilla/sessions"
 	"github.com/nu7hatch/gouuid"
 )
 
-var store sessions.Store
+//Currently experimenting with ways to generate a session ID
 
 func GenerateID() string {
 	s, err := uuid.NewV4()
@@ -30,7 +25,3 @@ func sessionId() string {
 	}
 	return base64.URLEncoding.EncodeToString(b)
 }
-
-// func storeUser() {
-// 	//store = sessions.NewFilesystemStore(path string, keyPairs ...[]byte)
-// }
