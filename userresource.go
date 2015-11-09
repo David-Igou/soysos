@@ -2,15 +2,16 @@ package main
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/emicklei/go-restful"
 )
 
 type User struct {
-	//ID       bson.ObjectId `bson:"_id,omitempty"`
-	Username string
-	Password []byte
-	//Posts    int
+	ID           string
+	Username     string
+	Password     string
+	SessionToken string
 }
 
 type UserResource struct{}
@@ -38,13 +39,6 @@ func (u UserResource) Register(container *restful.Container) {
 	container.Add(ws)
 }
 
-//LoginUser currently looks for a user object in the database
-func LoginUser(user *User) bool {
-	x := DB{Database()}
-	x.InsertUser(user)
-	return true
-}
-
 //login inserts the user into the database
 func (u UserResource) login(request *restful.Request, response *restful.Response) {
 	user := new(User)
@@ -52,8 +46,14 @@ func (u UserResource) login(request *restful.Request, response *restful.Response
 	if err != nil {
 		log.Printf(err.Error())
 	}
-	b := LoginUser(user)
-	log.Printf("Login returned value %t", b)
+
+	x := DB{Database()}
+	b, err := x.InsertUser(user)
+	if err != nil {
+		log.Printf(err.Error())
+	}
+	user.SessionToken = b
+	response.WriteHeaderAndEntity(http.StatusCreated, user)
 }
 
 //findUser will query the database for all users
