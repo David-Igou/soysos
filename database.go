@@ -32,7 +32,7 @@ func Database() *sql.DB {
 	return db
 }
 
-func (s DB) InsertUser(u *User) (string, error) {
+func (s DB) InsertUser(u *User) (string, int, error) {
 
 	stmt, err := s.db.Prepare("INSERT INTO users(id, username, password, sessionToken) values(?,?,?,?)")
 	checkErr(err)
@@ -45,7 +45,7 @@ func (s DB) InsertUser(u *User) (string, error) {
 	checkErr(err)
 
 	log.Println(id)
-	return session, err
+	return session, int(id), err
 }
 
 func (s DB) FindUser(u *User) (bool, error) {
@@ -65,7 +65,7 @@ func (s DB) FindUser(u *User) (bool, error) {
 	checkErr(err)
 
 	t := User{
-		string(id),
+		0,
 		string(username),
 		string(password),
 		string(sessionToken),
