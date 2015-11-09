@@ -8,7 +8,7 @@ import (
 )
 
 type User struct {
-	ID           string
+	ID           int
 	Username     string
 	Password     string
 	SessionToken string
@@ -48,11 +48,12 @@ func (u UserResource) login(request *restful.Request, response *restful.Response
 	}
 
 	x := DB{Database()}
-	b, err := x.InsertUser(user)
+	sesh, id, err := x.InsertUser(user)
 	if err != nil {
 		log.Printf(err.Error())
 	}
-	user.SessionToken = b
+	user.SessionToken = sesh
+	user.ID = id
 	response.WriteHeaderAndEntity(http.StatusCreated, user)
 }
 
