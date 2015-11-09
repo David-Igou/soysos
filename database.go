@@ -48,7 +48,7 @@ func (s DB) InsertUser(u *User) (string, error) {
 	return session, err
 }
 
-func (s DB) FindUser(u *User) {
+func (s DB) FindUser(u *User) (bool, error) {
 	// query
 	ident := u.ID
 	//var username string
@@ -72,7 +72,7 @@ func (s DB) FindUser(u *User) {
 	}
 
 	if t.SessionToken == u.SessionToken {
-		log.Print("wowowowow")
+		return true, nil
 	}
 	// for row.Next() {
 	// var sessionToken []byte
@@ -87,10 +87,31 @@ func (s DB) FindUser(u *User) {
 	// 	log.Print(string(created))
 	// }
 
+	return false, err
+
 }
 
 func checkErr(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func (s DB) FindToken(token string) (bool, error) {
+
+	row := s.db.QueryRow("SELECT sessionToken FROM users WHERE sessionToken=?", token)
+
+	var sessionToken []byte
+
+	err := row.Scan(&sessionToken)
+	//checkErr(err)
+	//log.Print(string(sessionToken))
+
+	if err != nil {
+		return false, err
+	}
+	if token == string(sessionToken) {
+		return true, nil
+	}
+	return false, nil
 }
