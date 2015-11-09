@@ -64,5 +64,11 @@ func (u UserResource) findUser(request *restful.Request, response *restful.Respo
 		log.Printf(err.Error())
 	}
 	x := DB{Database()}
-	x.FindUser(user)
+	resp, err := x.FindUser(user)
+	if resp {
+		response.WriteHeaderAndEntity(http.StatusFound, user)
+	}
+	if !resp {
+		response.WriteError(http.StatusBadRequest, err)
+	}
 }
