@@ -2,8 +2,9 @@ package main
 
 import (
 	"log"
-	"time"
+	"net/http"
 	"strings"
+	"time"
 
 	"github.com/emicklei/go-restful"
 )
@@ -37,5 +38,22 @@ func GlobalLogging(req *restful.Request, resp *restful.Response, chain *restful.
 // Route Filter (defines FilterFunction)
 func RouteLogging(req *restful.Request, resp *restful.Response, chain *restful.FilterChain) {
 	log.Printf("[SOYSOS(RouteLogging)] %s,%s\n", req.Request.Method, req.Request.URL)
+	chain.ProcessFilter(req, resp)
+}
+
+func Sessions(req *restful.Request, resp *restful.Response, chain *restful.FilterChain) {
+	token := req.HeaderParameter("token")
+	if token == "" {
+		log.Print("token was empty")
+		resp.WriteErrorString(http.StatusUnauthorized, "You need to establish a session first!")
+		return
+	}
+	x := DB{Database()}
+	c, err := x.FindToken(token)
+	if err != nil || c == false {
+		log.Print("token was incorrect")
+		resp.WriteErrorString(http.StatusUnauthorized, "Session does not exist!")
+		return
+	}
 	chain.ProcessFilter(req, resp)
 }
