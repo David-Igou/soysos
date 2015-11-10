@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
-	"time"
 	"strings"
+	"time"
 
 	"github.com/emicklei/go-restful"
 )
@@ -12,7 +12,7 @@ import (
 func MeasureTime(req *restful.Request, resp *restful.Response, chain *restful.FilterChain) {
 	now := time.Now()
 	chain.ProcessFilter(req, resp)
-	log.Printf("[SOYSOS (timer)] %v\n", time.Now().Sub(now))
+	log.Printf("[SOYSOS (Timer)] %v\n", time.Now().Sub(now))
 }
 
 // WebService Filter
@@ -25,6 +25,7 @@ func WebserviceLogging(req *restful.Request, resp *restful.Response, chain *rest
 		resp.StatusCode(),
 		resp.ContentLength(),
 	)
+
 	chain.ProcessFilter(req, resp)
 }
 
