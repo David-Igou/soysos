@@ -48,8 +48,7 @@ func (u CatResource) Register(container *restful.Container) {
 		Operation("createFact").
 		Reads(CatFact{})) // from the request
 
-	ws.Filter(WebserviceLogging).Filter(MeasureTime)
-
+	ws.Filter(WebserviceLogging).Filter(MeasureTime).Filter(Sessions)
 	container.Add(ws)
 }
 
