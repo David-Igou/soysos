@@ -32,7 +32,7 @@ func main() {
 	cmap["Lion"] = CatFact{"", "Lion", "Lions have sharp teef :D"}
 
 	cat := CatResource{cmap}
-	root := RootResource{}
+	root := RootResource{SwaggerPath}
 	user := UserResource{}
 
 	wsContainer := restful.NewContainer()

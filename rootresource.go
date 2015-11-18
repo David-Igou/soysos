@@ -7,7 +7,7 @@ import (
 )
 
 type RootResource struct {
-	Message string
+	path string
 }
 
 func (u RootResource) Register(container *restful.Container) {
@@ -27,7 +27,7 @@ func (u RootResource) Register(container *restful.Container) {
 
 func (u RootResource) root(request *restful.Request, response *restful.Response) {
 
-	http.Redirect(response.ResponseWriter, request.Request, "/apidocs/", http.StatusMovedPermanently)
+	http.Redirect(response.ResponseWriter, request.Request, u.path, http.StatusMovedPermanently)
 	// p := &Message{"Welcome to catfacts API!"}
 	// t, err := template.ParseFiles("home.html")
 	// if err != nil {
