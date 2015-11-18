@@ -25,6 +25,9 @@ func main() {
 		log.Fatalf("[mora][error] Unable to read properties:%v\n", err)
 	}
 
+	addr := props.MustGet("http.server.host") + ":" + props.MustGet("http.server.port")
+	basePath := "http://" + addr
+
 	cmap := make(map[string]CatFact)
 	cmap["Lion"] = CatFact{"", "Lion", "Lions have sharp teef :D"}
 
@@ -42,16 +45,16 @@ func main() {
 
 	config := swagger.Config{
 		WebServices:     wsContainer.RegisteredWebServices(),
-		WebServicesUrl:  "http://localhost:8008",
+		WebServicesUrl:  basePath,
 		ApiPath:         "/apidocs.json",
 		SwaggerPath:     SwaggerPath,
-		SwaggerFilePath: "./dist"}
+		SwaggerFilePath: props.GetString("swagger.file.path", "")}
 
 	swagger.RegisterSwaggerService(config, wsContainer)
 
-	server := &http.Server{Addr: "localhost:8008", Handler: wsContainer}
+	server := &http.Server{Addr: addr, Handler: wsContainer}
 
-	log.Printf("start listening on localhost:8008")
+	log.Printf("start listening on %s", basePath)
 
 	log.Fatal(server.ListenAndServe())
 }
