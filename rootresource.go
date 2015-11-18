@@ -1,8 +1,7 @@
 package main
 
 import (
-	"log"
-	"text/template"
+	"net/http"
 
 	"github.com/emicklei/go-restful"
 )
@@ -27,11 +26,13 @@ func (u RootResource) Register(container *restful.Container) {
 }
 
 func (u RootResource) root(request *restful.Request, response *restful.Response) {
-	p := &Message{"Welcome to catfacts API!"}
-	t, err := template.ParseFiles("home.html")
-	if err != nil {
-		log.Fatalf("Template gave: %s", err)
-	}
-	t.Execute(response.ResponseWriter, p)
-	//response.WriteEntity(p)
+
+	http.Redirect(response.ResponseWriter, request.Request, "/apidocs/", http.StatusMovedPermanently)
+	// p := &Message{"Welcome to catfacts API!"}
+	// t, err := template.ParseFiles("home.html")
+	// if err != nil {
+	// 	log.Fatalf("Template gave: %s", err)
+	// }
+	// t.Execute(response.ResponseWriter, p)
+	// //response.WriteEntity(p)
 }
