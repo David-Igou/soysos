@@ -38,6 +38,14 @@ func main() {
 	wsContainer := restful.NewContainer()
 	wsContainer.Filter(GlobalLogging)
 
+	cors := restful.CrossOriginResourceSharing{
+		ExposeHeaders:  []string{"X-My-Header"},
+		AllowedHeaders: []string{"Content-Type", "Accept"},
+		CookiesAllowed: false,
+		Container:      wsContainer}
+	wsContainer.Filter(cors.Filter)
+	wsContainer.Filter(wsContainer.OPTIONSFilter)
+
 	cat.Register(wsContainer)
 	root.Register(wsContainer)
 	user.Register(wsContainer)
