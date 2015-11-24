@@ -58,7 +58,7 @@ func main() {
 		CookiesAllowed: false,
 		Container:      wsContainer}
 
-	//wsContainer.Filter(wsContainer.OPTIONSFilter)
+	wsContainer.Filter(wsContainer.OPTIONSFilter)
 	wsContainer.Filter(cors.Filter)
 
 	server := &http.Server{Addr: addr, Handler: wsContainer}
