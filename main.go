@@ -22,7 +22,7 @@ func main() {
 	log.Printf("loading configuration from [%s]", *propertiesFile)
 	var err error
 	if props, err = properties.LoadFile(*propertiesFile, properties.UTF8); err != nil {
-		log.Fatalf("[mora][error] Unable to read properties:%v\n", err)
+		log.Fatalf("[soysos][error] Unable to read properties:%v\n", err)
 	}
 
 	addr := props.MustGet("http.server.host") + ":" + props.MustGet("http.server.port")
@@ -37,6 +37,7 @@ func main() {
 
 	wsContainer := restful.NewContainer()
 	wsContainer.Filter(GlobalLogging)
+	wsContainer.Filter(WebserviceLogging)
 
 	cat.Register(wsContainer)
 	root.Register(wsContainer)
@@ -59,7 +60,7 @@ func main() {
 		Container:      wsContainer}
 
 	//wsContainer.Filter(wsContainer.OPTIONSFilter)
-	wsContainer.Filter(cors.Filter)
+	//wsContainer.Filter(cors.Filter)
 
 	server := &http.Server{Addr: addr, Handler: wsContainer}
 

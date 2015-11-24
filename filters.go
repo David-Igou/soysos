@@ -38,7 +38,7 @@ func GlobalLogging(req *restful.Request, resp *restful.Response, chain *restful.
 
 // Route Filter (defines FilterFunction)
 func RouteLogging(req *restful.Request, resp *restful.Response, chain *restful.FilterChain) {
-	log.Printf("[SOYSOS(RouteLogging)] %s,%s\n", req.Request.Method, req.Request.URL)
+	log.Printf("[SOYSOS (RouteLogging)] %s,%s\n", req.Request.Method, req.Request.URL)
 	chain.ProcessFilter(req, resp)
 }
 
