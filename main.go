@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/emicklei/go-restful"
 	"github.com/emicklei/go-restful/swagger"
@@ -38,6 +39,8 @@ func main() {
 	wsContainer := restful.NewContainer()
 	wsContainer.Filter(GlobalLogging)
 
+	restful.TraceLogger(log.New(os.Stdout, "[restful] ", log.LstdFlags|log.Lshortfile))
+
 	cat.Register(wsContainer)
 	root.Register(wsContainer)
 	user.Register(wsContainer)
@@ -52,14 +55,14 @@ func main() {
 
 	swagger.RegisterSwaggerService(config, wsContainer)
 
-	// cors := restful.CrossOriginResourceSharing{
-	// 	ExposeHeaders:  []string{"Accept", "Authorization", "X-My-Header"},
-	// 	AllowedHeaders: []string{"GET", "Content-Type"},
-	// 	CookiesAllowed: false,
-	// 	Container:      wsContainer}
+	cors := restful.CrossOriginResourceSharing{
+		AllowedHeaders: []string{"Accept", "Authorization"},
+		AllowedMethods: []string{"GET"},
+		CookiesAllowed: false,
+		Container:      wsContainer}
 
-	wsContainer.Filter(wsContainer.OPTIONSFilter)
-	//wsContainer.Filter(cors.Filter)
+	//wsContainer.Filter(wsContainer.OPTIONSFilter)
+	wsContainer.Filter(cors.Filter)
 
 	server := &http.Server{Addr: addr, Handler: wsContainer}
 
