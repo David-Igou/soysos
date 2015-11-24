@@ -58,3 +58,10 @@ func Sessions(req *restful.Request, resp *restful.Response, chain *restful.Filte
 	}
 	chain.ProcessFilter(req, resp)
 }
+
+func enableCORS(req *restful.Request, resp *restful.Response, chain *restful.FilterChain) {
+	if origin := req.Request.Header.Get("Origin"); origin != "" {
+		resp.AddHeader("Access-Control-Allow-Origin", origin)
+	}
+	chain.ProcessFilter(req, resp)
+}
