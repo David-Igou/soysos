@@ -53,12 +53,12 @@ func main() {
 	swagger.RegisterSwaggerService(config, wsContainer)
 
 	cors := restful.CrossOriginResourceSharing{
-		ExposeHeaders:  []string{"Accept", "Authorization"},
-		AllowedHeaders: []string{"GET"},
+		ExposeHeaders:  []string{"Accept", "Authorization", "X-My-Header"},
+		AllowedHeaders: []string{"GET", "Content-Type"},
 		CookiesAllowed: false,
 		Container:      wsContainer}
 
-	wsContainer.Filter(wsContainer.OPTIONSFilter)
+	//wsContainer.Filter(wsContainer.OPTIONSFilter)
 	wsContainer.Filter(cors.Filter)
 
 	server := &http.Server{Addr: addr, Handler: wsContainer}
