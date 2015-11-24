@@ -28,6 +28,7 @@ func main() {
 
 	addr := props.MustGet("http.server.host") + ":" + props.MustGet("http.server.port")
 	basePath := "http://" + addr
+	SwaggerPath = props.GetString("swagger.path", "")
 
 	cmap := make(map[string]CatFact)
 	cmap["Lion"] = CatFact{"", "Lion", "Lions have sharp teef :D"}
@@ -41,11 +42,9 @@ func main() {
 	wsContainer.Filter(enableCORS)
 
 	restful.TraceLogger(log.New(os.Stdout, "[restful] ", log.LstdFlags|log.Lshortfile))
-
 	cat.Register(wsContainer)
 	root.Register(wsContainer)
 	user.Register(wsContainer)
-	SwaggerPath = props.GetString("swagger.path", "")
 
 	config := swagger.Config{
 		WebServices:     wsContainer.RegisteredWebServices(),
