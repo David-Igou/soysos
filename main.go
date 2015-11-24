@@ -38,14 +38,6 @@ func main() {
 	wsContainer := restful.NewContainer()
 	wsContainer.Filter(GlobalLogging)
 
-	cors := restful.CrossOriginResourceSharing{
-		ExposeHeaders:  []string{"X-My-Header"},
-		AllowedHeaders: []string{"Content-Type", "Accept"},
-		CookiesAllowed: false,
-		Container:      wsContainer}
-	wsContainer.Filter(cors.Filter)
-	wsContainer.Filter(wsContainer.OPTIONSFilter)
-
 	cat.Register(wsContainer)
 	root.Register(wsContainer)
 	user.Register(wsContainer)
@@ -59,6 +51,15 @@ func main() {
 		SwaggerFilePath: props.GetString("swagger.file.path", "")}
 
 	swagger.RegisterSwaggerService(config, wsContainer)
+
+	cors := restful.CrossOriginResourceSharing{
+		ExposeHeaders:  []string{"Accept", "Authorization"},
+		AllowedHeaders: []string{"GET"},
+		CookiesAllowed: false,
+		Container:      wsContainer}
+
+	//wsContainer.Filter(wsContainer.OPTIONSFilter)
+	wsContainer.Filter(cors.Filter)
 
 	server := &http.Server{Addr: addr, Handler: wsContainer}
 
