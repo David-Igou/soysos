@@ -1,0 +1,25 @@
+{
+	"ImportPath": "soysos",
+	"GoVersion": "go1.6",
+	"Deps": [
+		{
+			"ImportPath": "github.com/emicklei/go-restful",
+			"Comment": "v1.1.3-141-gf3b10ff",
+			"Rev": "f3b10ff408486b3e248197254514778285fbdea1"
+		},
+		{
+			"ImportPath": "github.com/magiconair/properties",
+			"Comment": "v1.5.4-10-g6ac0b95",
+			"Rev": "6ac0b95f449268951dd5c100682ea687a9866ea1"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-sqlite3",
+			"Comment": "v1.1.0-27-g5651a9d",
+			"Rev": "5651a9d9d49ec25811d08220ee972080378d52ea"
+		},
+		{
+			"ImportPath": "github.com/nu7hatch/gouuid",
+			"Rev": "179d4d0c4d8d407a32af483c2354df1d2c91e6c3"
+		}
+	]
+}
